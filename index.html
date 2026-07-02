@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A static, GitHub Pages compatible web application security scanner.">
+    <title>9M2PJU Web App Scanner</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="workspace">
+        <aside class="control-panel" aria-label="Scanner controls">
+          <div class="brand-block">
+            <span class="brand-mark" aria-hidden="true">9</span>
+            <div>
+              <h1>9M2PJU Web App Scanner</h1>
+              <p>Static security triage for web apps, TLS posture, CVE leads, and OWASP checks.</p>
+            </div>
+          </div>
+
+          <form id="scan-form" class="scan-form">
+            <label for="target-url">Target URL</label>
+            <div class="target-row">
+              <input id="target-url" name="target-url" type="url" placeholder="https://example.com" autocomplete="url" required>
+              <button type="submit" class="primary-action">Scan</button>
+            </div>
+            <p class="field-note">Only scan systems you own or have permission to test.</p>
+
+            <div class="mode-group" aria-label="Evidence mode">
+              <label class="mode-pill">
+                <input type="checkbox" id="deep-links" checked>
+                <span>Deep links</span>
+              </label>
+              <label class="mode-pill">
+                <input type="checkbox" id="attempt-fetch" checked>
+                <span>Browser fetch</span>
+              </label>
+              <label class="mode-pill">
+                <input type="checkbox" id="attempt-ssl" checked>
+                <span>SSL Labs API</span>
+              </label>
+            </div>
+          </form>
+
+          <div class="evidence-box">
+            <label for="headers-input">Response headers or curl output</label>
+            <textarea id="headers-input" spellcheck="false" placeholder="HTTP/2 200&#10;content-security-policy: default-src 'self'&#10;strict-transport-security: max-age=31536000; includeSubDomains&#10;set-cookie: sid=...; Secure; HttpOnly; SameSite=Lax"></textarea>
+          </div>
+
+          <div class="evidence-box">
+            <label for="html-input">HTML source or dependency snippets</label>
+            <textarea id="html-input" spellcheck="false" placeholder="Paste page HTML, package banners, script tags, meta generator tags, or scan notes."></textarea>
+          </div>
+
+          <div class="button-row">
+            <button id="analyze-evidence" type="button">Analyze Evidence</button>
+            <button id="load-demo" type="button">Demo</button>
+            <button id="clear-all" type="button">Clear</button>
+          </div>
+        </aside>
+
+        <section class="results-panel" aria-live="polite">
+          <div class="status-band">
+            <div>
+              <p class="eyebrow">Assessment</p>
+              <h2 id="target-title">No target scanned yet</h2>
+            </div>
+            <div class="score-wrap" aria-label="Security score">
+              <span id="score-value">--</span>
+              <span id="score-label">waiting</span>
+            </div>
+          </div>
+
+          <div id="summary-grid" class="summary-grid"></div>
+
+          <nav class="tabs" aria-label="Result sections">
+            <button class="tab is-active" data-tab="findings">Findings</button>
+            <button class="tab" data-tab="ssl">SSL</button>
+            <button class="tab" data-tab="cve">CVE</button>
+            <button class="tab" data-tab="owasp">OWASP</button>
+            <button class="tab" data-tab="report">Report</button>
+          </nav>
+
+          <section id="tab-findings" class="tab-panel is-active">
+            <div class="section-head">
+              <h3>Prioritized Findings</h3>
+              <span id="finding-count">0 findings</span>
+            </div>
+            <div id="findings-list" class="finding-list empty-state">
+              Enter a target or paste evidence to start.
+            </div>
+          </section>
+
+          <section id="tab-ssl" class="tab-panel">
+            <div class="section-head">
+              <h3>SSL and HTTPS</h3>
+              <span id="ssl-state">Not checked</span>
+            </div>
+            <div id="ssl-output" class="data-list"></div>
+          </section>
+
+          <section id="tab-cve" class="tab-panel">
+            <div class="section-head">
+              <h3>CVE and Technology Leads</h3>
+              <span id="tech-count">0 technologies</span>
+            </div>
+            <div id="tech-list" class="tech-list"></div>
+          </section>
+
+          <section id="tab-owasp" class="tab-panel">
+            <div class="section-head">
+              <h3>OWASP Coverage</h3>
+              <span>Top 10 oriented triage</span>
+            </div>
+            <div id="owasp-list" class="owasp-list"></div>
+          </section>
+
+          <section id="tab-report" class="tab-panel">
+            <div class="section-head">
+              <h3>Exportable Report</h3>
+              <div class="button-row compact">
+                <button id="copy-report" type="button">Copy Markdown</button>
+                <button id="download-json" type="button">Download JSON</button>
+              </div>
+            </div>
+            <textarea id="report-output" class="report-output" spellcheck="false" readonly></textarea>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <template id="finding-template">
+      <article class="finding">
+        <div class="severity-dot" aria-hidden="true"></div>
+        <div>
+          <div class="finding-head">
+            <h4></h4>
+            <span class="severity"></span>
+          </div>
+          <p class="finding-detail"></p>
+          <p class="finding-fix"></p>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

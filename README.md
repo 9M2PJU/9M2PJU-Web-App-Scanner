@@ -26,3 +26,9 @@ This app has no build step.
 ## Important limitation
 
 GitHub Pages is static hosting. A browser-only app cannot perform raw socket TLS tests, bypass CORS, crawl authenticated areas, run exploit payloads, or prove CVE exploitability. This scanner marks uncertain areas clearly and provides links or evidence inputs for deeper validation.
+
+## Support
+
+If you find this project useful, please consider supporting it:
+
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9m2pju%40hamradio.my&currency_code=MYR&item_name=9M2PJU-Web-App-Scanner)
